@@ -1,3 +1,9 @@
+import { ProfileCard } from "../components/ProfileCard";
+
 export const Home = () => {
-  return (<>home</>);
+  return (
+    <>
+      <ProfileCard />
+    </>
+  );
 };
