@@ -2,19 +2,23 @@ import pic from "../assets/pic.png";
 import { IoMdSettings } from "react-icons/io";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaDev } from "react-icons/fa";
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
+import { Image } from "./Image";
 
 export const ProfileCard = () => {
+  const { theme } = useContext(ThemeContext);
   return (
     <>
-      <section className=" flex flex-col items-center justify-center p-5 bg-white text-black shadow-2xl shadow-gray-500 w-1/4">
+      <section
+        className={
+          theme == "light"
+            ? " flex flex-col items-center justify-center p-5 bg-white text-black shadow-2xl shadow-gray-500 w-1/4"
+            : " flex flex-col items-center justify-center p-5 bg-black text-white shadow-2xl shadow-gray-500 w-1/4"
+        }
+      >
         <div className="flex items-center justify-between   border-b-2 p-3">
-          <div className="w-20 h-20 rounded-full">
-            <img
-              src={pic}
-              alt="user profile pic"
-              className="w-full h-full object-center rounded-full"
-            />
-          </div>
+          <Image pic={pic} />
           <div>
             <h2 className="font-bold">Arvind Kumar</h2>
             <h4>3 friends</h4>
