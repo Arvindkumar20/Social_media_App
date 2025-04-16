@@ -1,8 +1,16 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 
 export const Signup = () => {
   const imageRef = useRef();
+  const [signUpData, setSignUpData] = useState({
+    fisrtName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    location: "",
+    occupation: "",
+  });
 
   const { theme } = useContext(ThemeContext);
   const handleImageChange = (e) => {};
@@ -11,10 +19,22 @@ export const Signup = () => {
     imageRef.current.click();
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("object");
+    console.log(signUpData);
+  };
+
+  const handleChange = (e) => {
+    setSignUpData((pre) => {
+      return { ...pre, [e.target.name]: e.target.value };
+    });
+  };
   return (
     <>
       <div className="flex items-center justify-center mx-auto my-20 ">
         <form
+          onSubmit={handleSubmit}
           className={
             theme == "light"
               ? "p-5 shadow-md shadow-gray-400 w-1/2 bg-gray-700 text-white"
@@ -27,6 +47,7 @@ export const Signup = () => {
               placeholder="First Name..."
               name="fisrtName"
               className="w-1/2 p-3 border-2 outline-none rounded "
+              onChange={handleChange}
               required
             />
             <input
@@ -34,6 +55,7 @@ export const Signup = () => {
               placeholder="Last Name..."
               name="lastName"
               className="w-1/2 p-3 border-2 outline-none rounded"
+              onChange={handleChange}
               required
             />
           </div>
@@ -42,12 +64,14 @@ export const Signup = () => {
             placeholder="Your location..."
             name="location"
             className="w-full p-3 border-2 outline-none rounded my-5"
+            onChange={handleChange}
           />
           <input
             type="text"
             placeholder="Ocupation..."
             name="occupation"
             className="w-full p-3 border-2 outline-none rounded "
+            onChange={handleChange}
           />
           <input
             type="file"
@@ -72,6 +96,7 @@ export const Signup = () => {
             placeholder="Your Email..."
             name="email"
             className="w-full p-3 border-2 outline-none rounded "
+            onChange={handleChange}
             required
           />
           <input
@@ -79,6 +104,7 @@ export const Signup = () => {
             placeholder="password..."
             name="password"
             className="w-full p-3 border-2 outline-none rounded my-5"
+            onChange={handleChange}
             required
           />
           <button

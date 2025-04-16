@@ -5,6 +5,7 @@ import { FaDev } from "react-icons/fa";
 import { useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { Image } from "./Image";
+import { Link } from "react-router-dom";
 
 export const ProfileCard = () => {
   const { theme } = useContext(ThemeContext);
@@ -13,19 +14,19 @@ export const ProfileCard = () => {
       <section
         className={
           theme == "light"
-            ? " flex flex-col items-center justify-center p-5 bg-white text-black shadow-2xl shadow-gray-500 w-1/4"
-            : " flex flex-col items-center justify-center p-5 bg-black text-white shadow-2xl shadow-gray-500 w-1/4"
+            ? " flex flex-col items-center justify-center p-5 bg-white text-black shadow-md shadow-gray-400 w-full rounded"
+            : " flex flex-col items-center justify-center p-5 bg-black text-white shadow-md shadow-gray-400 w-full rounded"
         }
       >
-        <div className="flex items-center justify-between   border-b-2 p-3">
+        <div className="flex items-center justify-center gap-5   border-b-2 p-3">
           <Image pic={pic} />
           <div>
             <h2 className="font-bold">Arvind Kumar</h2>
             <h4>3 friends</h4>
           </div>
-          <p>
+          <Link to={"update-profile"}>
             <IoMdSettings />
-          </p>
+          </Link>
         </div>
         <div className="border-b-2 p-3 flex flex-col items-start justify-start">
           <h3 className="flex items-start justify-start gap-5">

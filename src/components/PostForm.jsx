@@ -7,21 +7,34 @@ export const PostForm = () => {
   const imageRef = useRef();
   const [image, setImage] = useState(null);
 
-const {theme}=useContext(ThemeContext);
+  const [description, setDescription] = useState("");
+
+  const { theme } = useContext(ThemeContext);
 
   const handleImageUpload = () => {
     imageRef.current.click();
   };
+
+  const handleChange = (e) => {
+    setDescription(e.target.value);
+  };
+
+  const handleSubmit=(e)=>{
+    e.preventDefault();
+    console.log(description);
+    setDescription("")
+  }
+
   return (
     <>
       <section
         className={
           theme == "light"
-            ? "bg-white shadow-xl shadow-gray-500 rounded w-full p-5"
+            ? "bg-white shadow-md shadow-gray-400 rounded w-full p-5"
             : "bg-black text-white shadow-xl shadow-gray-500 rounded w-full p-5"
         }
       >
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="flex items-center justify-start gap-12 border-b-2 border-gray-500 p-5">
             <div className="w-12 h-12 rounded-full">
               <img
@@ -34,6 +47,9 @@ const {theme}=useContext(ThemeContext);
               type="text"
               placeholder="write something to post..."
               className="rounded-3xl py-3 px-5 w-5/6 border-2 bg-gray-200 text-black"
+              name="description"
+              value={description}
+              onChange={handleChange}
             />
           </div>
 

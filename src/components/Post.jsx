@@ -6,9 +6,8 @@ import { ThemeContext } from "../context/ThemeContext";
 import { AiFillLike } from "react-icons/ai";
 import { FaShareNodes } from "react-icons/fa6";
 import { MdComment } from "react-icons/md";
-import { Link } from "react-router-dom";
 
-export const PostFeed = () => {
+export const Post = () => {
   const { theme } = useContext(ThemeContext);
   return (
     <>
@@ -26,9 +25,7 @@ export const PostFeed = () => {
             <p className="font-normal  text-sm "> location</p>
           </div>
         </div>
-        <Link to="/post/2" className="">
         <p className="font-normal  text-sm  p-4">Description</p>
-        </Link>
 
         <div>
           <img src={pic} alt="post image" />

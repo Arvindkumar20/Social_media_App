@@ -5,6 +5,8 @@ import { Login } from "./pages/Login";
 import { NavBar } from "./components/NavBar";
 import { ThemeContext } from "./context/ThemeContext";
 import { useEffect, useState } from "react";
+import { ProfileSetting } from "./components/ProfileSetting";
+import { Post } from "./components/Post";
 
 export const App = () => {
   const [theme, setTheme] = useState("light");
@@ -23,6 +25,8 @@ export const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/update-profile" element={<ProfileSetting />} />
+            <Route path="/post/:id" element={<Post/>} />
           </Routes>
         </ThemeContext.Provider>
       </Router>

@@ -1,13 +1,25 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 export const Login = () => {
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+
   const { theme } = useContext(ThemeContext);
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("form submmited");
+    console.log(loginData);
   };
 
+  const handleChange = (e) => {
+    setLoginData((pre) => {
+      return { ...pre, [e.target.name]: e.target.value };
+    });
+  };
+  
   return (
     <>
       <div className="flex items-cente justify-center mx-auto my-20">
@@ -25,6 +37,8 @@ export const Login = () => {
               placeholder="Enter your Email..."
               name="email"
               className="py-2 px-3 outline-none border-2 rounded w-full"
+              onChange={handleChange}
+              required
             />
           </div>
           <div className="w-full">
@@ -33,10 +47,15 @@ export const Login = () => {
               placeholder="Enter your password..."
               name="password"
               className="py-2 px-3 outline-none border-2 rounded w-full"
+              onChange={handleChange}
+              required
             />
           </div>
           <div className="flex  items-cente justify-center mx-auto w-full">
-            <button className="py-2 px-3 bg-blue-500 font-semibold text-white rounded cursor-pointer w-1/2">
+            <button
+              className="py-2 px-3 bg-blue-500 font-semibold text-white rounded cursor-pointer w-1/2"
+              type="submit"
+            >
               Submit
             </button>
           </div>
