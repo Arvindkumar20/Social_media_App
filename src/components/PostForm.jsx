@@ -1,29 +1,101 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import pic from "../assets/pic.png";
 import { IoImagesOutline } from "react-icons/io5";
 import { ThemeContext } from "../context/ThemeContext";
+import axiosInstance from "../api/api"; // make sure this uses your base URL
+import axios from "axios";
+import { Image } from "./Image";
 
 export const PostForm = () => {
+  const [profile, setProfile] = useState({
+    name: "",
+    friends: [],
+    image: { url: "" },
+    comments: [],
+    posts: [],
+  });
   const imageRef = useRef();
   const [image, setImage] = useState(null);
-
-  const [description, setDescription] = useState("");
-
+  const [description, setDescription] = useState({
+    title: "",
+    description: "",
+  });
   const { theme } = useContext(ThemeContext);
 
   const handleImageUpload = () => {
     imageRef.current.click();
   };
 
-  const handleChange = (e) => {
-    setDescription(e.target.value);
+  const handleImageChange = (e) => {
+    setImage(e.target.files[0]);
   };
 
-  const handleSubmit=(e)=>{
+  const handleChange = (e) => {
+    setDescription((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+ useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await axiosInstance.get("http://localhost:5000/api/auth", {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
+console.log(res)
+        const data = res.data;
+        setProfile({
+          name: data.name || "No Name",
+          friends: data.friends || [],
+          image: data.image || { url: "" },
+          comments: data.comments || [],
+          posts: data.posts || [],
+        });
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(description);
-    setDescription("")
-  }
+
+    if (!description.title &&!description.description && !image) return;
+
+    const formData = new FormData();
+    formData.append("title", description.title);
+    formData.append("description", description.description);
+    if (image) {
+      formData.append("image", image);
+    }
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/post/create",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Post Created:", res);
+      setDescription({
+        title: "",
+        description: "",
+      });
+      setImage(null);
+      imageRef.current.value = ""; // Reset file input
+    } catch (error) {
+      console.log("Error creating post:", error);
+    }
+  };
 
   return (
     <>
@@ -35,27 +107,38 @@ export const PostForm = () => {
         }
       >
         <form onSubmit={handleSubmit}>
-          <div className="flex items-center justify-start gap-12 border-b-2 border-gray-500 p-5">
-            <div className="w-12 h-12 rounded-full">
-              <img
-                src={pic}
-                alt="profile pic"
-                className="w-full h-full object-center rounded-full"
+          <div className="flex items-start justify-start gap-12 border-b-2 border-gray-500 p-5">
+            <div className="w-16 h-16 rounded-full">
+              <Image pic={profile.image.url} />
+            </div>
+            <div className="flex flex-col items-center justify-center gap-5 w-full">
+              <input
+                type="text"
+                placeholder="write something to post..."
+                className="rounded-3xl py-2 px-3 w-5/6 border-2 bg-gray-200 text-black"
+                name="title"
+                value={description.title}
+                onChange={handleChange}
+              />
+              <textarea
+                type="text"
+                placeholder="write something to post..."
+                className="rounded-3xl py-3 px-5 w-5/6 border-2 bg-gray-200 text-black"
+                name="description"
+                value={description.description}
+                onChange={handleChange}
               />
             </div>
-            <input
-              type="text"
-              placeholder="write something to post..."
-              className="rounded-3xl py-3 px-5 w-5/6 border-2 bg-gray-200 text-black"
-              name="description"
-              value={description}
-              onChange={handleChange}
-            />
           </div>
 
           <section className="flex items-center justify-between p-3">
-            <div className="">
-              <input type="file" className="hidden" ref={imageRef} />
+            <div>
+              <input
+                type="file"
+                className="hidden"
+                ref={imageRef}
+                onChange={handleImageChange}
+              />
               <button
                 className="flex items-center justify-center gap-3 cursor-pointer"
                 type="button"

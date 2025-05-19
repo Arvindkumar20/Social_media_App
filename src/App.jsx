@@ -7,6 +7,7 @@ import { ThemeContext } from "./context/ThemeContext";
 import { useEffect, useState } from "react";
 import { ProfileSetting } from "./components/ProfileSetting";
 import { Post } from "./components/Post";
+import { ToastContainer } from "react-toastify";
 
 export const App = () => {
   const [theme, setTheme] = useState("light");
@@ -21,12 +22,14 @@ export const App = () => {
       <Router>
         <ThemeContext.Provider value={{ theme, setTheme }}>
           <NavBar />
+                <ToastContainer />
+
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/update-profile" element={<ProfileSetting />} />
-            <Route path="/post/:id" element={<Post/>} />
+            <Route path="/post/:postId" element={<Post/>} />
           </Routes>
         </ThemeContext.Provider>
       </Router>
